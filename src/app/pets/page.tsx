@@ -12,7 +12,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export default function PetsPage() {
   const page = 1;
-  const totalPages = 10;
+  const totalPages = 5;
   const total = 15;
   const itensPerPage = 10;
 

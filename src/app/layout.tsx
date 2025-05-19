@@ -32,7 +32,9 @@ export default function RootLayout({
         <div className="flex h-full flex-col">
           <Header />
 
-          <main className="flex-1 overflow-y-auto">{children}</main>
+          <main className="w-full max-w-[1920px] flex-1 self-center overflow-y-auto">
+            {children}
+          </main>
         </div>
       </body>
     </html>

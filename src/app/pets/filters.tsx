@@ -95,11 +95,6 @@ function FilterItens({ className, ...props }: React.ComponentProps<"div">) {
           <Toggle variant="outline">Réptil</Toggle>
           <Toggle variant="outline">Réptil</Toggle>
           <Toggle variant="outline">Réptil</Toggle>
-          <Toggle variant="outline">Réptil</Toggle>
-          <Toggle variant="outline">Réptil</Toggle>
-          <Toggle variant="outline">Réptil</Toggle>
-          <Toggle variant="outline">Réptil</Toggle>
-          <Toggle variant="outline">Réptil</Toggle>
           <Toggle variant="outline">Dinossauro</Toggle>
         </div>
       </div>
