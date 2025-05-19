@@ -13,7 +13,7 @@ import { Slider } from "@/components/ui/slider";
 import { Toggle } from "@/components/ui/toggle";
 import { cn } from "@/lib/utils";
 import { useState } from "react";
-import { FilterCategoryItem } from "./filter-category-item";
+import { Checkbox } from "@radix-ui/react-checkbox";
 
 export function Filters() {
   return (
@@ -109,4 +109,25 @@ function FilterItens({ className, ...props }: React.ComponentProps<"div">) {
       </div>
     </div>
   );
+
+  interface FilterCategoryItemProps {
+    name: string;
+    count: number;
+  }
+
+  function FilterCategoryItem({
+    name,
+    count,
+    className,
+    ...props
+  }: React.ComponentProps<typeof Checkbox> & FilterCategoryItemProps) {
+    return (
+      <div className={cn("flex items-center justify-between", className)}>
+        <div className="flex items-center gap-2">
+          <Checkbox {...props} /> <span>{name}</span>
+        </div>
+        <span className="text-primary justify-self-end">{count}</span>
+      </div>
+    );
+  }
 }
