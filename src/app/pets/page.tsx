@@ -1,14 +1,14 @@
+import { PetSimpleCard } from "@/components/pet-simple-card";
+import { Button } from "@/components/ui/button";
 import {
   Select,
-  SelectValue,
-  SelectTrigger,
-  SelectItem,
   SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
 } from "@/components/ui/select";
-import { PetSimpleCard } from "@/components/pet-simple-card";
-import { Filters } from "./filters";
-import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Filters } from "./filters";
 
 export default function PetsPage() {
   const page = 1;
@@ -23,7 +23,7 @@ export default function PetsPage() {
     <div className="flex flex-col gap-2 p-8 md:flex-row">
       <Filters />
       <div className="flex w-full flex-col p-4">
-        <div className="flex w-full justify-between">
+        <div className="flex w-full justify-between gap-2">
           <p className="text-muted-foreground">
             Mostrando {itensStart}-{itensEnd} de {total} resultados
           </p>

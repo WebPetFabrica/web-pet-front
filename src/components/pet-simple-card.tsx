@@ -23,7 +23,7 @@ export function PetSimpleCard({
       )}
       {...props}
     >
-      <div className="border-border size-32 h-full w-full bg-amber-200">
+      <div className="border-border bg-header-background size-32 h-full w-full">
         Imagem aqui
       </div>
       <div className="flex flex-col px-3 py-4">
