@@ -24,7 +24,7 @@ export default function Page() {
                 Mantenha-me conectado
               </label>
             </div>
-            <a className="text-sm hover:underline">Esqueceu a senha?</a>
+            <span className="text-sm hover:underline">Esqueceu a senha?</span>
           </div>
 
           <Button className="text-lg">Entrar</Button>
@@ -33,7 +33,7 @@ export default function Page() {
         <div className="mt-6 flex w-full flex-col gap-2 text-sm">
           <div className="flex gap-2 self-center">
             <span>Ainda não tem uma conta?</span>
-            <a className="hover:underline">Clique aqui</a>
+            <span className="hover:underline">Clique aqui</span>
           </div>
 
           <div className="flex w-full items-center justify-center gap-4">

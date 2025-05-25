@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 import { Menu, PawPrint, UserRound } from "lucide-react";
 import Link, { LinkProps } from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import React from "react";
 import { Button } from "./ui/button";
 import {
@@ -24,8 +24,8 @@ interface INavLink {
 const navLinks: INavLink[] = [
   { link: "/", title: "Inicio" },
   { link: "/pets", title: "Buscar Pets" },
-  { link: "/", title: "ONGs/Protetores" },
-  { link: "/", title: "Doar" },
+  { link: "/ongs", title: "ONGs/Protetores" },
+  { link: "/doar", title: "Doar" },
 ];
 
 export function Header() {
@@ -35,8 +35,10 @@ export function Header() {
     setOpen(open);
   }, []);
 
+  const pathname = usePathname();
+
   return (
-    <header className="bg-muted m-2 flex h-fit justify-between rounded-2xl p-2">
+    <header className="bg-header-background m-2 flex h-fit justify-between rounded-2xl p-2">
       <div className="flex flex-1">
         <Drawer open={open} onOpenChange={onOpenChange}>
           <DrawerTrigger asChild>
@@ -77,9 +79,18 @@ export function Header() {
         </div>
       </div>
 
-      <nav className="hidden flex-1 justify-center justify-self-center md:flex">
+      <nav className="hidden flex-1 justify-center space-x-2 justify-self-center md:flex">
         {navLinks.map(({ link, title }) => (
-          <Button key={link + title} asChild variant="ghost">
+          <Button
+            key={link + title}
+            variant="ghost"
+            className={cn(
+              "rounded-none hover:bg-inherit hover:text-inherit",
+              pathname === link &&
+                "text-primary border-primary hover:text-primary border-b-2",
+            )}
+            asChild
+          >
             <Link href={link}>{title}</Link>
           </Button>
         ))}
