@@ -32,7 +32,7 @@ export default function Cadastro() {
               ONG / Protetor
             </Button>
           </div>
-          <p className="text-xs text-muted-foreground">
+          <p className="text-muted-foreground text-xs">
             Perfil selecionado: <strong>{perfil}</strong>
           </p>
         </div>
@@ -44,7 +44,7 @@ export default function Cadastro() {
           <Input placeholder="Celular:" />
           <Input placeholder="CPF:" />
 
-          <p className="text-2xl font-semibold tracking-tight uppercase mt-6">
+          <p className="mt-6 text-2xl font-semibold tracking-tight uppercase">
             Aceite
           </p>
           <div className="flex items-start gap-2">
@@ -61,7 +61,7 @@ export default function Cadastro() {
             </label>
           </div>
 
-          <Button className="text-lg mt-4">Enviar</Button>
+          <Button className="mt-4 text-lg">Enviar</Button>
         </div>
       </div>
     </div>
