@@ -1,7 +1,7 @@
+import { Header } from "@/components/header";
 import type { Metadata } from "next";
 import { Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
-import { Header } from "@/components/header";
 
 const poppinsSans = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -32,7 +32,9 @@ export default function RootLayout({
         <div className="flex h-full flex-col">
           <Header />
 
-          <main className="flex-1 overflow-y-auto">{children}</main>
+          <main className="w-full max-w-[1920px] flex-1 self-center overflow-y-auto">
+            {children}
+          </main>
         </div>
       </body>
     </html>
