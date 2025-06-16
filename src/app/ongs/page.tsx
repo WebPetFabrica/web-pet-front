@@ -30,15 +30,13 @@ export default function OngsPage() {
   ];
 
   return (
-    <div className="bg-white text-black">
+    <div className="bg-background text-foreground">
       {/* Banner */}
-      <section className="relative bg-[#FFF8F2] py-12 px-6 overflow-hidden">
+      <section className="relative bg-[#FFF8F2] dark:bg-foreground/5 py-12 px-6 overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-6">
           <div className="z-10">
-            <h2 className="text-3xl font-bold text-orange-500">Web Pets</h2>
-            <p className="text-2xl font-extrabold mt-2 text-black leading-tight">
-              Conheça nossos <br /> apoiadores
-            </p>
+            <h1 className="text-4xl font-bold text-[#FA893E]">Web Pets</h1>
+            <h2 className="text-2xl font-semibold">Conheça nossos <br /> apoiadores</h2>
           </div>
           <img
             src="/ongs/banner-ongs.png"
@@ -48,7 +46,6 @@ export default function OngsPage() {
         </div>
       </section>
 
-      {/* Lista de ONGs */}
       <section className="px-6 py-10 space-y-8 max-w-7xl mx-auto">
         {ongs.map((ong, idx) => {
           const isEven = idx % 2 === 0;
@@ -57,7 +54,7 @@ export default function OngsPage() {
               key={idx}
               className={`flex flex-col md:flex-row ${
                 !isEven ? "md:flex-row-reverse" : ""
-              } gap-6 items-center bg-white rounded-2xl border shadow-sm p-6`}
+              } gap-6 items-center bg-background rounded-2xl border border-foreground/10 shadow-sm p-6`}
             >
               <img
                 src={ong.image}
@@ -66,17 +63,17 @@ export default function OngsPage() {
               />
               <div className="flex-1">
                 <h3 className="text-xl font-bold mb-2">{ong.name}</h3>
-                <p className="text-sm text-gray-600 leading-relaxed">
+                <p className="text-sm text-foreground/70 leading-relaxed">
                   {ong.description}
                 </p>
-                <div className="flex items-center gap-4 mt-4 text-gray-600">
+                <div className="flex items-center gap-4 mt-4 text-foreground/70">
                   <Facebook size={18} />
                   <Instagram size={18} />
                   <Mail size={18} />
                 </div>
                 <Button
                   size="lg"
-                  className="bg-black text-white hover:bg-gray-900 rounded-md mt-4"
+                  className="bg-foreground text-background hover:bg-foreground/90 rounded-md mt-4"
                 >
                   Adotar
                 </Button>
@@ -86,8 +83,7 @@ export default function OngsPage() {
         })}
       </section>
 
-      {/* Rodapé */}
-      <footer className="relative bg-[#F6F6F6] mt-10 px-6 pt-14 pb-10 border-t overflow-hidden">
+      <footer className="relative bg-foreground/5 mt-10 px-6 pt-14 pb-10 border-t border-foreground/10 overflow-hidden">
         <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-start gap-6 z-10 relative">
           <div>
             <h4 className="font-bold text-lg">🐾 Web Pets</h4>
@@ -95,7 +91,7 @@ export default function OngsPage() {
               Web Pets foi criado para estreitar laços entre pessoas que têm o
               sonho de adotar um pet e nossas ONGs e protetores parceiros.
             </p>
-            <div className="flex gap-4 mt-4 text-gray-600">
+            <div className="flex gap-4 mt-4 text-foreground/70">
               <Facebook size={18} />
               <Instagram size={18} />
               <Mail size={18} />
@@ -108,7 +104,7 @@ export default function OngsPage() {
             <p>Doar</p>
           </div>
         </div>
-        <p className="text-center text-xs text-gray-400 mt-8 relative z-10">
+        <p className="text-center text-xs text-foreground/50 mt-8 relative z-10">
           © Copyright Web Pets 2025. Design by Webpets.
         </p>
         <img
