@@ -1,17 +1,16 @@
 import { Button } from "@/components/ui/button";
 import { House, Syringe } from "lucide-react";
-import Image from "next/image";
 
 export default function PetPage() {
   return (
     <div className="grid grid-cols-1 gap-8 p-8 lg:grid-cols-2">
       <div className="flex size-fit justify-self-center">
-        <Image
+        {/* <Image
           width={500}
           height={500}
           alt=""
           src="https://i1.wp.com/petsbagunceiros.com/wp-content/uploads/2020/03/cachorro-racao.png"
-        />
+        /> */}
       </div>
 
       <div className="space-y-8">

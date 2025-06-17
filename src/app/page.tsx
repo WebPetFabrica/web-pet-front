@@ -2,7 +2,13 @@
 
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
-import { ClipboardList, Handshake, MoveRight, Search, Star } from "lucide-react";
+import {
+  ClipboardList,
+  Handshake,
+  MoveRight,
+  Search,
+  Star,
+} from "lucide-react";
 import Image from "next/image";
 
 export default function Home() {
@@ -21,16 +27,16 @@ export default function Home() {
 
   return (
     <div className="bg-white text-black">
-      
-      <div className="flex h-[550px] w-full items-center justify-between bg-[#FFF7EC] px-32 py-10 shadow-md relative overflow-hidden">
-        
-        <div className="space-y-4 w-1/2 z-10">
-          <div className="absolute -top-12 -left-12 w-28 h-28 bg-[#FA893E] rounded-[35%] opacity-80 -z-0"></div>
+      <div className="relative flex h-[550px] w-full items-center justify-between overflow-hidden bg-[#FFF7EC] px-32 py-10 shadow-md">
+        <div className="z-10 w-1/2 space-y-4">
+          <div className="absolute -top-12 -left-12 -z-0 h-28 w-28 rounded-[35%] bg-[#FA893E] opacity-80"></div>
 
           <h1 className="text-4xl font-bold text-[#FA893E]">Web Pets</h1>
           <h2 className="text-2xl font-semibold">Quem somos nós?</h2>
-          <p className="w-4/5 text-sm text-muted-foreground leading-relaxed">
-            Conectamos adotantes a ONGs e protetores em espaços estratégicos de adoção.<br />
+          <p className="text-muted-foreground w-4/5 text-sm leading-relaxed">
+            Conectamos adotantes a ONGs e protetores em espaços estratégicos de
+            adoção.
+            <br />
             Juntos, promovemos lares cheios de amor e cuidado para os pets.
           </p>
           <Button size="lg" className="bg-black text-white hover:bg-gray-900">
@@ -38,13 +44,13 @@ export default function Home() {
           </Button>
         </div>
 
-        <div className="relative w-1/2 flex justify-center items-center z-10">
+        <div className="relative z-10 flex w-1/2 items-center justify-center">
           <Image
             src="/images/hero-bg-shape.png"
             alt="Fundo decorativo"
             width={420}
             height={420}
-            className="absolute top-0 left-1/2 -translate-x-1/2 z-0"
+            className="absolute top-0 left-1/2 z-0 -translate-x-1/2"
           />
           <Image
             src="/images/family-pets.png"
@@ -65,16 +71,26 @@ export default function Home() {
 
       {/* Seção: Conheça alguns amiguinhos */}
       <div className="px-10 py-16">
-        <div className="flex justify-between items-center">
+        <div className="flex items-center justify-between">
           <h2 className="text-3xl font-bold tracking-wide">
             Conheça alguns amiguinhos
           </h2>
           <div className="flex gap-2">
-            <Button variant="secondary" size="icon" className="rounded-full" onClick={() => scrollPets("left")}>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="rounded-full"
+              onClick={() => scrollPets("left")}
+            >
               <span className="sr-only">Voltar</span>
               &#8592;
             </Button>
-            <Button variant="secondary" size="icon" className="rounded-full" onClick={() => scrollPets("right")}>
+            <Button
+              variant="secondary"
+              size="icon"
+              className="rounded-full"
+              onClick={() => scrollPets("right")}
+            >
               <span className="sr-only">Avançar</span>
               &#8594;
             </Button>
@@ -83,7 +99,7 @@ export default function Home() {
 
         <div
           ref={petsContainerRef}
-          className="flex gap-6 mt-10 overflow-x-auto no-scrollbar flex-nowrap"
+          className="no-scrollbar mt-10 flex flex-nowrap gap-6 overflow-x-auto"
         >
           {[
             { nome: "Flora", idade: "6 meses", src: "/images/flora.jpg" },
@@ -95,23 +111,23 @@ export default function Home() {
           ].map((pet, index) => (
             <div
               key={index}
-              className="bg-white text-black border border-gray-200 rounded-xl w-60 flex-shrink-0 overflow-hidden shadow-sm"
+              className="w-60 flex-shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-white text-black shadow-sm"
             >
               <Image
                 src={pet.src}
                 alt={pet.nome}
                 width={240}
                 height={160}
-                className="w-full h-40 object-cover"
+                className="h-40 w-full object-cover"
               />
               <div className="px-4 py-3">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center justify-between">
                   <span className="font-medium">{pet.nome}</span>
                   <Button variant="ghost" size="icon">
                     <MoveRight className="text-primary" />
                   </Button>
                 </div>
-                <p className="text-sm text-muted-foreground">{pet.idade}</p>
+                <p className="text-muted-foreground text-sm">{pet.idade}</p>
               </div>
             </div>
           ))}
@@ -120,10 +136,10 @@ export default function Home() {
 
       {/* Processo de adoção */}
       <div className="bg-white px-10 py-16">
-        <h2 className="text-2xl font-bold text-center mb-10">
+        <h2 className="mb-10 text-center text-2xl font-bold">
           Qual o Processo de adoção?
         </h2>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-6xl mx-auto">
+        <div className="mx-auto grid max-w-6xl grid-cols-2 gap-6 md:grid-cols-4">
           {[
             { icon: Search, label: "Ache seu Pet" },
             { icon: ClipboardList, label: "Formulário de Interesse" },
@@ -132,9 +148,9 @@ export default function Home() {
           ].map(({ icon: Icon, label }) => (
             <div
               key={label}
-              className="flex flex-col items-center justify-center bg-[#6b5e4c] text-white rounded-lg p-6 h-36 shadow-md"
+              className="flex h-36 flex-col items-center justify-center rounded-lg bg-[#6b5e4c] p-6 text-white shadow-md"
             >
-              <Icon className="size-6 mb-3 text-orange-400" />
+              <Icon className="mb-3 size-6 text-orange-400" />
               <span className="text-center text-sm font-medium text-white">
                 {label}
               </span>
@@ -145,7 +161,7 @@ export default function Home() {
 
       {/* Categorias */}
       <div className="px-10 py-16">
-        <h2 className="text-2xl font-bold text-center mb-10">
+        <h2 className="mb-10 text-center text-2xl font-bold">
           Seu possível amiguinho, está em alguma dessas categorias?
         </h2>
         <div className="flex justify-center gap-20">
@@ -155,7 +171,7 @@ export default function Home() {
             { label: "Exóticos", image: "/turtle-icon.svg" },
           ].map(({ label, image }) => (
             <div key={label} className="flex flex-col items-center">
-              <div className="relative size-28 rounded-full mb-4 bg-gradient-to-tl from-orange-400 to-orange-200 flex items-center justify-center">
+              <div className="relative mb-4 flex size-28 items-center justify-center rounded-full bg-gradient-to-tl from-orange-400 to-orange-200">
                 <Image
                   src={image}
                   alt={label}
@@ -168,7 +184,7 @@ export default function Home() {
             </div>
           ))}
         </div>
-        <div className="flex justify-center mt-10">
+        <div className="mt-10 flex justify-center">
           <Button size="lg" className="bg-black text-white hover:bg-gray-800">
             Adotar
           </Button>
@@ -176,18 +192,22 @@ export default function Home() {
       </div>
 
       {/* Rodapé */}
-      <footer className="bg-gray-100 px-10 py-10 text-sm text-muted-foreground relative">
-        <div className="flex flex-col md:flex-row justify-between items-center md:items-start gap-10">
-          <div className="space-y-2 max-w-md">
-            <h3 className="font-bold text-black flex items-center gap-2 text-lg">
+      <footer className="text-muted-foreground relative bg-gray-100 px-10 py-10 text-sm">
+        <div className="flex flex-col items-center justify-between gap-10 md:flex-row md:items-start">
+          <div className="max-w-md space-y-2">
+            <h3 className="flex items-center gap-2 text-lg font-bold text-black">
               <span className="text-xl">🐾</span> Web Pets
             </h3>
             <p>
-              Web pets foi criado para estreitar laços entre pessoas que têm o sonho de adotar um pet e nossas ONGs e protetores parceiros.
+              Web pets foi criado para estreitar laços entre pessoas que têm o
+              sonho de adotar um pet e nossas ONGs e protetores parceiros.
             </p>
-            <div className="flex gap-3 mt-2">
+            <div className="mt-2 flex gap-3">
               {["f", "i", "x"].map((icon, i) => (
-                <div key={i} className="bg-black text-white rounded-full size-6 flex items-center justify-center text-xs">
+                <div
+                  key={i}
+                  className="flex size-6 items-center justify-center rounded-full bg-black text-xs text-white"
+                >
                   {icon}
                 </div>
               ))}
@@ -195,7 +215,7 @@ export default function Home() {
           </div>
 
           <div>
-            <h4 className="font-semibold text-black mb-2">Institucional</h4>
+            <h4 className="mb-2 font-semibold text-black">Institucional</h4>
             <ul className="space-y-1">
               <li>Sobre Nós</li>
               <li>Histórias de Adotantes</li>
@@ -203,10 +223,10 @@ export default function Home() {
             </ul>
           </div>
         </div>
-        <div className="text-center text-xs mt-10">
+        <div className="mt-10 text-center text-xs">
           © Copyright Web Pets 2025. Design by Webpets.
         </div>
-        <div className="absolute bottom-0 left-0 right-0 h-10 bg-[url('/paws-pattern.png')] bg-repeat opacity-10 pointer-events-none" />
+        <div className="pointer-events-none absolute right-0 bottom-0 left-0 h-10 bg-[url('/paws-pattern.png')] bg-repeat opacity-10" />
       </footer>
     </div>
   );
