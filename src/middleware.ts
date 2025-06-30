@@ -1,16 +1,3 @@
-import { auth } from "@/lib/auth";
+export { default } from "next-auth/middleware";
 
-const PRIVATE_PATHS = /^\/\(private\)(\/|$)/;
-
-export default auth((req) => {
-  if (PRIVATE_PATHS.test(req.nextUrl.pathname)) {
-    if (!req.auth && req.nextUrl.pathname !== "/login") {
-      const newUrl = new URL("/login", req.nextUrl.origin);
-      return Response.redirect(newUrl);
-    }
-  }
-});
-
-export const config = {
-  matcher: ["/((private)(/.*)?|private)"],
-};
+export const config = { matcher: ["/manage-pets/:path*"] };

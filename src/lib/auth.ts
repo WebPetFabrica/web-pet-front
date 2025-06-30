@@ -1,12 +1,6 @@
-import NextAuth from "next-auth";
-import Credentials from "next-auth/providers/credentials";
+import NextAuth, { NextAuthOptions } from "next-auth";
+import CredentialsProvider from "next-auth/providers/credentials";
 import { $fetch } from "./fetch";
-
-interface Response<T> {
-  success: boolean;
-  message: string;
-  data: T;
-}
 
 export interface User {
   name: string;
@@ -15,33 +9,59 @@ export interface User {
   userType: "Administrador" | "Usuário Fisico" | "Usuário Juridico";
 }
 
-export const { handlers, signIn, signOut, auth } = NextAuth({
+export const authOptions: NextAuthOptions = {
   providers: [
-    Credentials({
+    CredentialsProvider({
       credentials: {
-        email: {
-          type: "email",
-          label: "E-mail",
-        },
-        password: {
-          type: "password",
-          label: "Senha",
-        },
+        email: { label: "email", type: "text" },
+        password: { label: "password", type: "password" },
       },
-      authorize: async (credentials) => {
-        const response = await $fetch<Response<User>>("/auth/login", {
-          body: credentials,
-        });
+      async authorize(credentials) {
+        if (!credentials?.email || !credentials?.password) return null;
 
-        const user = response.data;
+        console.log("fdfd");
 
-        // VALIDAR ERRROS
-        if (!user) {
-          throw new Error("Erro no login");
+        try {
+          const response = await $fetch("@post/auth/login", {
+            body: {
+              email: credentials?.email,
+              password: credentials?.password,
+            },
+          });
+
+          const user = response.data;
+
+          console.log(user);
+
+          return user;
+        } catch (error) {
+          throw new Error(
+            JSON.stringify({ message: "Serviço de autenticação está offline" }),
+          );
         }
 
-        return user;
+        return null;
       },
     }),
   ],
-});
+  pages: {
+    signIn: "/login",
+  },
+  session: {
+    strategy: "jwt",
+    maxAge: 3 * 60 * 60, // 3 hour
+  },
+  secret: process.env.AUTH_SECRET,
+  callbacks: {
+    async jwt({ token, user }) {
+      if (user) {
+        token.user = user;
+      }
+      return token;
+    },
+    async session({ session, token }) {
+      session.user = token.user as any;
+      return session;
+    },
+  },
+};
