@@ -1,7 +1,9 @@
 import { Header } from "@/components/header";
+import { Toaster } from "@/components/ui/sonner";
 import type { Metadata } from "next";
 import { Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
+import Providers from "./providers";
 
 const poppinsSans = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -33,9 +35,10 @@ export default function RootLayout({
           <Header />
 
           <main className="w-full max-w-[1920px] flex-1 self-center overflow-y-auto">
-            {children}
+            <Providers>{children}</Providers>
           </main>
         </div>
+        <Toaster position="top-center" richColors />
       </body>
     </html>
   );

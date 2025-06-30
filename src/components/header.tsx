@@ -15,6 +15,13 @@ import {
   DrawerTrigger,
 } from "./ui/drawer";
 import { Input } from "./ui/input";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { signOut } from "next-auth/react";
 
 interface INavLink {
   title: string;
@@ -34,6 +41,10 @@ export function Header() {
   const onOpenChange = React.useCallback((open: boolean) => {
     setOpen(open);
   }, []);
+
+  async function signOutCb() {
+    await signOut({ redirect: true });
+  }
 
   const pathname = usePathname();
 
@@ -101,9 +112,16 @@ export function Header() {
           placeholder="Procurar na sua cidade"
           className="hidden w-min rounded-2xl md:inline"
         />
-        <Button variant="outline" size="icon" className="rounded-full">
-          <UserRound />
-        </Button>
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="outline" size="icon" className="rounded-full">
+              <UserRound />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-56">
+            <DropdownMenuItem onClick={signOutCb}>Sair</DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
       </div>
     </header>
   );
