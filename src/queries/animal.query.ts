@@ -19,6 +19,9 @@ export function useAnimalsQuery(filters?: Partial<AnimalsQueryType>) {
   return useQuery({
     queryKey: animalKeys.list(filters ?? {}),
     queryFn: async () => {
+      if (!filters?.category) delete filters?.category;
+      if (!filters?.status) delete filters?.status;
+
       const response = await $fetch("/animal/animals", {
         query: filters ?? {},
       });

@@ -14,7 +14,10 @@ export const Category = z.enum([
 
 export const Status = z.enum(["AVAILABLE", "ADOPTED"]);
 
-export const UserType = z.enum(["ADMIN", "FISICO", "JURIDICO"]);
+export const FISICO = "FISICO";
+export const JURIDICO = "JURIDICO";
+
+export const UserType = z.enum(["ADMIN", FISICO, JURIDICO]);
 
 export const User = z.object({
   id: z.string(),
@@ -44,11 +47,14 @@ export const ResponseDTO = z.object({
 });
 
 export const AuthResponseData = z.object({
+  id: z.string(),
   name: z.string(),
   email: z.string(),
   token: z.string(),
   userType: UserType,
 });
+
+export type AuthReturnType = z.infer<typeof AuthResponseData>;
 
 export const AuthResponse = z.object({
   success: z.boolean(),
