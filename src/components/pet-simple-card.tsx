@@ -4,7 +4,7 @@ import { MoveRight } from "lucide-react";
 
 interface Props {
   name: string;
-  age: string;
+  age?: string;
   action?: () => void;
 }
 
@@ -33,7 +33,7 @@ export function PetSimpleCard({
             <MoveRight className="text-primary" />
           </Button>
         </div>
-        <span className="text-muted-foreground">{age}</span>
+        {age && <span className="text-muted-foreground">{age}</span>}
       </div>
     </div>
   );
