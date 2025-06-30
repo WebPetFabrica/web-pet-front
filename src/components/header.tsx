@@ -21,7 +21,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu";
-import { signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 
 interface INavLink {
   title: string;
@@ -32,18 +32,21 @@ const navLinks: INavLink[] = [
   { link: "/", title: "Inicio" },
   { link: "/pets", title: "Buscar Pets" },
   { link: "/ongs", title: "ONGs/Protetores" },
-  { link: "/doar", title: "Doar" },
+  // { link: "/doar", title: "Doar" },
 ];
 
 export function Header() {
+  const router = useRouter();
   const [open, setOpen] = React.useState(false);
+  const { data: session } = useSession();
 
   const onOpenChange = React.useCallback((open: boolean) => {
     setOpen(open);
   }, []);
 
   async function signOutCb() {
-    await signOut({ redirect: true });
+    await signOut({ redirect: false });
+    router.push("/");
   }
 
   const pathname = usePathname();
@@ -108,10 +111,10 @@ export function Header() {
       </nav>
 
       <div className="flex flex-1 justify-end gap-2">
-        <Input
+        {/* <Input
           placeholder="Procurar na sua cidade"
           className="hidden w-min rounded-2xl md:inline"
-        />
+        /> */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button variant="outline" size="icon" className="rounded-full">
@@ -119,7 +122,23 @@ export function Header() {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent className="w-56">
-            <DropdownMenuItem onClick={signOutCb}>Sair</DropdownMenuItem>
+            {session && session.user?.name && (
+              <div className="text-muted-foreground px-3 py-2 text-sm font-semibold">
+                {session.user.name}
+              </div>
+            )}
+            {session ? (
+              <DropdownMenuItem onClick={signOutCb}>Sair</DropdownMenuItem>
+            ) : (
+              <>
+                <DropdownMenuItem asChild>
+                  <Link href="/login">Login</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem asChild>
+                  <Link href="/cadastro">Cadastro</Link>
+                </DropdownMenuItem>
+              </>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       </div>

@@ -87,7 +87,7 @@ export default function PetsPage() {
               <PetSimpleCard
                 key={pet.id}
                 name={pet.name}
-                age={"-"}
+                // age={"-"}
                 action={() => router.push(`/pets/${pet.id}`)}
               />
             ))

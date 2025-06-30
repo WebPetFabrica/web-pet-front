@@ -110,7 +110,7 @@ export default function ManagePetsPage() {
                         <Pencil />
                       </Link>
                     </Button>
-                    <DeleteButton />
+                    <DeleteButton id={pet.id} />
                   </TableCell>
                 </TableRow>
               ))
