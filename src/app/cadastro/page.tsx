@@ -18,10 +18,13 @@ import {
 } from "@/lib/api.schema";
 import { $fetch } from "@/lib/fetch";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
+import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 export default function Cadastro() {
+  const router = useRouter();
+
   const [perfil, setPerfil] = useState<"adotante" | "protetor">("adotante");
   const [accepted, setAccepted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -49,7 +52,8 @@ export default function Cadastro() {
 
       if (res.success) {
         setSuccess("Cadastro realizado com sucesso!");
-        form.reset();
+
+        router.push("/login");
       } else {
         setError(res.message || "Erro ao cadastrar");
       }
