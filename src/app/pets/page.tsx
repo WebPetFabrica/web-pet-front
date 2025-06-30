@@ -1,3 +1,5 @@
+"use client";
+
 import { PetSimpleCard } from "@/components/pet-simple-card";
 import { Button } from "@/components/ui/button";
 import {

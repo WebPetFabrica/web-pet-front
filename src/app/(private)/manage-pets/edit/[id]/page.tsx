@@ -6,20 +6,22 @@ import {
   useAnimalQuery,
 } from "@/queries/animal.query";
 import { useSearchParams, useRouter } from "next/navigation";
+import { use } from "react";
 
-export default function Page() {
-  const searchParams = useSearchParams();
+export default function Page({ params }: { params: Promise<{ id: string }> }) {
+  const { id } = use(params);
   const router = useRouter();
-
-  const id = searchParams.get("id") ?? "";
 
   const { data: animal, isLoading } = useAnimalQuery(id);
   const updateMutation = useUpdateAnimalMutation();
 
+  console.log("id", id);
+  console.log("fdlf", animal);
+
   function onSubmit(values: AnimalFormType) {
     if (!id) return;
     updateMutation.mutate(
-      { id, animal: { ...values, id } },
+      { id, animal: { ...values } },
       {
         onSuccess: () => {
           router.push("/manage-pets");

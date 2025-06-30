@@ -1,4 +1,5 @@
-import { signIn } from "@/lib/auth";
+"use client";
+
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
@@ -11,8 +12,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { SiFacebook, SiGoogle, SiX } from "@icons-pack/react-simple-icons";
-import { useState } from "react";
+import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 import z from "zod";
 
 const formSchema = z.object({
@@ -24,20 +27,26 @@ const formSchema = z.object({
 type FormType = z.infer<typeof formSchema>;
 
 export default function Page() {
-  const [error, setError] = useState("");
+  const router = useRouter();
   const form = useForm<FormType>({
     resolver: zodResolver(formSchema),
     defaultValues: { email: "", password: "", keepConnected: false },
   });
 
   async function onSubmit(values: FormType) {
-    setError("");
     const result = await signIn("credentials", {
-      redirect: false,
       email: values.email,
       password: values.password,
+      redirect: false,
     });
-    if (result?.error) setError("E-mail ou senha inválidos");
+
+    console.log(result);
+    if (result?.ok) {
+      toast.success("Login bem sucedido");
+      router.push("/manage-pets");
+    }
+
+    if (result?.error) toast.error("E-mail ou senha inválidos");
   }
 
   return (
@@ -97,7 +106,6 @@ export default function Page() {
               />
               <span className="text-sm hover:underline">Esqueceu a senha?</span>
             </div>
-            {error && <span className="text-destructive text-sm">{error}</span>}
             <Button className="text-lg" type="submit">
               Entrar
             </Button>

@@ -12,59 +12,88 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
+  FISICO,
+  JURIDICO,
   RegisterRequest,
   RegisterRequestType,
   UserTypeType,
 } from "@/lib/api.schema";
-import { $fetch } from "@/lib/fetch";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import z from "zod/v4";
+import { toast } from "sonner";
+import { $fetch } from "@/lib/fetch";
+
+export const formSchema = z.discriminatedUnion("userType", [
+  z.object({
+    userType: z.literal(FISICO),
+    name: z.string(),
+    email: z.email(),
+    phone: z.string(),
+    cnpj: z.string().optional(),
+    password: z.string(),
+  }),
+  z.object({
+    userType: z.literal(JURIDICO),
+    name: z.string(),
+    email: z.email(),
+    phone: z.string(),
+    cpf: z.string().optional(),
+    password: z.string(),
+  }),
+]);
 
 export default function Cadastro() {
   const router = useRouter();
 
-  const [perfil, setPerfil] = useState<"adotante" | "protetor">("adotante");
+  const [perfil, setPerfil] = useState<UserTypeType>(JURIDICO);
   const [accepted, setAccepted] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
 
   const form = useForm<RegisterRequestType>({
     resolver: standardSchemaResolver(RegisterRequest),
-    defaultValues: {},
+    defaultValues: {
+      name: "",
+      email: "",
+      phone: "",
+      cpf: "",
+      cnpj: "",
+      password: "",
+    },
   });
 
-  const onSubmit = async (data: RegisterRequestType) => {
-    setError(null);
-    setSuccess(null);
+  useEffect(() => {
+    form.setValue("userType", perfil);
+  }, [perfil, form]);
+
+  async function onSubmit(data: RegisterRequestType) {
     try {
-      const userType =
-        perfil === "adotante" ? "FISICO" : ("JURIDICO" as UserTypeType);
       const payload = {
         ...data,
-        userType: userType,
       };
+      console.log(payload);
+
       if (!payload.cpf) delete payload.cpf;
       if (!payload.cnpj) delete payload.cnpj;
 
       const res = await $fetch("@post/auth/register", { body: payload });
 
       if (res.success) {
-        setSuccess("Cadastro realizado com sucesso!");
+        toast.success("Cadastro realizado com sucesso!");
 
         router.push("/login");
       } else {
-        setError(res.message || "Erro ao cadastrar");
+        toast.error(res.message || "Erro ao cadastrar");
       }
     } catch (e: unknown) {
       if (e && typeof e === "object" && "message" in e) {
-        setError((e as { message?: string }).message || "Erro ao cadastrar");
+        toast.error((e as { message?: string }).message || "Erro ao cadastrar");
       } else {
-        setError("Erro ao cadastrar");
+        toast.error("Erro ao cadastrar");
       }
     }
-  };
+  }
 
   return (
     <div className="flex h-full w-full items-center justify-center">
@@ -78,23 +107,20 @@ export default function Cadastro() {
           <span className="text-sm font-medium">Escolha o tipo de perfil:</span>
           <div className="flex gap-4">
             <Button
-              variant={perfil === "adotante" ? "default" : "outline"}
-              onClick={() => setPerfil("adotante")}
+              variant={perfil === FISICO ? "default" : "outline"}
+              onClick={() => setPerfil(FISICO)}
               type="button"
             >
               Adotante
             </Button>
             <Button
-              variant={perfil === "protetor" ? "default" : "outline"}
-              onClick={() => setPerfil("protetor")}
+              variant={perfil === JURIDICO ? "default" : "outline"}
+              onClick={() => setPerfil(JURIDICO)}
               type="button"
             >
               ONG / Protetor
             </Button>
           </div>
-          <p className="text-muted-foreground text-xs">
-            Perfil selecionado: <strong>{perfil}</strong>
-          </p>
         </div>
 
         <Form {...form}>
@@ -141,7 +167,7 @@ export default function Cadastro() {
                 </FormItem>
               )}
             />
-            {perfil === "adotante" ? (
+            {perfil === FISICO ? (
               <FormField
                 control={form.control}
                 name="cpf"
@@ -204,8 +230,6 @@ export default function Cadastro() {
                 ser feito, inclusive, por meio de notificações e e-mail.
               </label>
             </div>
-            {error && <p className="text-destructive text-sm">{error}</p>}
-            {success && <p className="text-sm text-green-600">{success}</p>}
             <Button
               className="mt-4 text-lg"
               type="submit"

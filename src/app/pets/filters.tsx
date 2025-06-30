@@ -12,6 +12,10 @@ import {
 } from "@/components/ui/drawer";
 import { Category, CategoryType, Status, StatusType } from "@/lib/api.schema";
 import { cn } from "@/lib/utils";
+import {
+  categoryTranslations,
+  statusTranslations,
+} from "@/components/animal-form";
 
 interface FiltersProps {
   selectedCategory: string | null;
@@ -98,7 +102,7 @@ function FilterItens({
           {Category.options.map((cat) => (
             <FilterCategoryItem
               key={cat}
-              name={cat}
+              name={categoryTranslations[cat] || cat}
               checked={selectedCategory === cat}
               onCheckedChange={() => setSelectedCategory(cat)}
               count={0}
@@ -123,7 +127,7 @@ function FilterItens({
           {Status.options.map((status) => (
             <FilterCategoryItem
               key={status}
-              name={status}
+              name={statusTranslations[status] || status}
               checked={selectedStatus === status}
               onCheckedChange={() => setSelectedStatus(status)}
               count={0}
@@ -172,7 +176,7 @@ function FilterItens({
           />{" "}
           <span>{name}</span>
         </div>
-        <span className="text-primary justify-self-end">{count}</span>
+        {/* <span className="text-primary justify-self-end">{count}</span> */}
       </div>
     );
   }

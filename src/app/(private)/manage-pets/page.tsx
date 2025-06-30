@@ -1,3 +1,5 @@
+"use client";
+
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -12,6 +14,10 @@ import { Pencil, Plus } from "lucide-react";
 import Link from "next/link";
 import { useQueryState } from "nuqs";
 import { DeleteButton } from "./_components/delete-button";
+import {
+  categoryTranslations,
+  statusTranslations,
+} from "@/components/animal-form";
 
 export default function ManagePetsPage() {
   const [_pageParam, setPageParam] = useQueryState("page", {
@@ -77,7 +83,7 @@ export default function ManagePetsPage() {
               </TableRow>
             ) : isError ? (
               <TableRow>
-                <TableCell colSpan={5} className="text-center text-red-500">
+                <TableCell colSpan={5} className="text-destructive text-center">
                   Erro ao carregar pets.
                 </TableCell>
               </TableRow>
@@ -92,8 +98,12 @@ export default function ManagePetsPage() {
                 <TableRow key={pet.id}>
                   <TableCell>{pet.name}</TableCell>
                   <TableCell>{pet.description}</TableCell>
-                  <TableCell>{pet.category}</TableCell>
-                  <TableCell>{pet.status}</TableCell>
+                  <TableCell>
+                    {categoryTranslations[pet.category] || pet.category}
+                  </TableCell>
+                  <TableCell>
+                    {statusTranslations[pet.status] || pet.status}
+                  </TableCell>
                   <TableCell>
                     <Button variant="ghost" asChild>
                       <Link href={`/manage-pets/edit/${pet.id}`}>
