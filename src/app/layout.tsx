@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import { Geist_Mono, Poppins } from "next/font/google";
 import "./globals.css";
 import Providers from "./providers";
+import NextAuthSessionProvider from "@/providers/session-provider";
 
 const poppinsSans = Poppins({
   weight: ["100", "200", "300", "400", "500", "600", "700", "800", "900"],
@@ -31,13 +32,15 @@ export default function RootLayout({
       <body
         className={`${poppinsSans.variable} ${geistMono.variable} h-full font-sans antialiased`}
       >
-        <div className="flex h-full flex-col">
-          <Header />
+        <NextAuthSessionProvider>
+          <div className="flex h-full flex-col">
+            <Header />
 
-          <main className="w-full max-w-[1920px] flex-1 self-center overflow-y-auto">
-            <Providers>{children}</Providers>
-          </main>
-        </div>
+            <main className="w-full max-w-[1920px] flex-1 self-center overflow-y-auto">
+              <Providers>{children}</Providers>
+            </main>
+          </div>
+        </NextAuthSessionProvider>
         <Toaster position="top-center" richColors />
       </body>
     </html>

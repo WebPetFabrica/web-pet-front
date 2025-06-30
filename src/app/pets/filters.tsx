@@ -79,9 +79,9 @@ export function Filters({
 
 interface FilterItensProps extends React.ComponentProps<"div"> {
   selectedCategory: CategoryType | null;
-  setSelectedCategory: (value: CategoryType) => void;
+  setSelectedCategory: (value: CategoryType | null) => void;
   selectedStatus: StatusType | null;
-  setSelectedStatus: (value: StatusType) => void;
+  setSelectedStatus: (value: StatusType | null) => void;
 }
 
 function FilterItens({
@@ -104,7 +104,9 @@ function FilterItens({
               key={cat}
               name={categoryTranslations[cat] || cat}
               checked={selectedCategory === cat}
-              onCheckedChange={() => setSelectedCategory(cat)}
+              onCheckedChange={() =>
+                setSelectedCategory(selectedCategory === cat ? null : cat)
+              }
               count={0}
             />
           ))}
@@ -129,7 +131,9 @@ function FilterItens({
               key={status}
               name={statusTranslations[status] || status}
               checked={selectedStatus === status}
-              onCheckedChange={() => setSelectedStatus(status)}
+              onCheckedChange={() =>
+                setSelectedStatus(selectedStatus === status ? null : status)
+              }
               count={0}
             />
           ))}

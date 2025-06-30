@@ -10,9 +10,17 @@ import {
   Star,
 } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useAnimalsQuery } from "@/queries/animal.query";
+import { PetSimpleCard } from "@/components/pet-simple-card";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+  const router = useRouter();
+
   const petsContainerRef = useRef<HTMLDivElement>(null);
+
+  const { data: animals, isLoading, isError } = useAnimalsQuery({ size: 10 });
 
   const scrollPets = (direction: "left" | "right") => {
     const container = petsContainerRef.current;
@@ -40,12 +48,12 @@ export default function Home() {
             Juntos, promovemos lares cheios de amor e cuidado para os pets.
           </p>
           <Button size="lg" className="bg-black text-white hover:bg-gray-900">
-            Adotar
+            Adotar!
           </Button>
         </div>
 
         <div className="relative z-10 flex w-1/2 items-center justify-center">
-          <Image
+          {/* <Image
             src="/images/hero-bg-shape.png"
             alt="Fundo decorativo"
             width={420}
@@ -65,7 +73,7 @@ export default function Home() {
             width={100}
             height={100}
             className="absolute top-10 left-0 z-10"
-          />
+          />*/}
         </div>
       </div>
 
@@ -101,36 +109,20 @@ export default function Home() {
           ref={petsContainerRef}
           className="no-scrollbar mt-10 flex flex-nowrap gap-6 overflow-x-auto"
         >
-          {[
-            { nome: "Flora", idade: "6 meses", src: "/images/flora.jpg" },
-            { nome: "Galileu", idade: "2 anos", src: "/images/galileu.jpg" },
-            { nome: "Rabito", idade: "1 ano", src: "/images/rabito.jpg" },
-            { nome: "Faísca", idade: "5 anos", src: "/images/faisca.jpg" },
-            { nome: "Tico", idade: "3 anos", src: "/images/faisca.jpg" },
-            { nome: "Luna", idade: "1 ano", src: "/images/faisca.jpg" },
-          ].map((pet, index) => (
-            <div
-              key={index}
-              className="w-60 flex-shrink-0 overflow-hidden rounded-xl border border-gray-200 bg-white text-black shadow-sm"
-            >
-              <Image
-                src={pet.src}
-                alt={pet.nome}
-                width={240}
-                height={160}
-                className="h-40 w-full object-cover"
+          {isLoading && <div>Carregando...</div>}
+          {isError && <div>Erro ao carregar pets.</div>}
+          {animals &&
+            animals.animals &&
+            animals.animals.length > 0 &&
+            animals.animals.map((pet, index: number) => (
+              <PetSimpleCard
+                className="h-80 w-60"
+                key={pet.id}
+                name={pet.name}
+                // age={"-"}
+                action={() => router.push(`/pets/${pet.id}`)}
               />
-              <div className="px-4 py-3">
-                <div className="flex items-center justify-between">
-                  <span className="font-medium">{pet.nome}</span>
-                  <Button variant="ghost" size="icon">
-                    <MoveRight className="text-primary" />
-                  </Button>
-                </div>
-                <p className="text-muted-foreground text-sm">{pet.idade}</p>
-              </div>
-            </div>
-          ))}
+            ))}
         </div>
       </div>
 
@@ -166,20 +158,22 @@ export default function Home() {
         </h2>
         <div className="flex justify-center gap-20">
           {[
-            { label: "Domésticos", image: "/cat-icon.svg" },
-            { label: "Silvestres", image: "/bird-icon.svg" },
-            { label: "Exóticos", image: "/turtle-icon.svg" },
-          ].map(({ label, image }) => (
+            { label: "Gatos", category: "CAT" },
+            { label: "Cachorros", category: "DOG" },
+            { label: "Roedores", category: "RODENT" },
+          ].map(({ label, category }) => (
             <div key={label} className="flex flex-col items-center">
-              <div className="relative mb-4 flex size-28 items-center justify-center rounded-full bg-gradient-to-tl from-orange-400 to-orange-200">
-                <Image
+              <Link href={`/pets?category=${category}`}>
+                <div className="relative mb-4 flex size-28 items-center justify-center rounded-full bg-gradient-to-tl from-orange-400 to-orange-200">
+                  {/* <Image
                   src={image}
                   alt={label}
                   width={64}
                   height={64}
                   className="object-contain"
-                />
-              </div>
+                  /> */}
+                </div>
+              </Link>
               <span className="font-semibold">{label}</span>
             </div>
           ))}

@@ -1,5 +1,4 @@
 import QueryProvider from "@/providers/query-provider";
-import NextAuthSessionProvider from "@/providers/session-provider";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ReactNode } from "react";
 
@@ -11,9 +10,7 @@ export default function Providers({ children }: Props) {
   return (
     <>
       <NuqsAdapter>
-        <QueryProvider>
-          <NextAuthSessionProvider>{children}</NextAuthSessionProvider>
-        </QueryProvider>
+        <QueryProvider>{children}</QueryProvider>
       </NuqsAdapter>
     </>
   );

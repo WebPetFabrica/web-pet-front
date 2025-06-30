@@ -11,8 +11,15 @@ import {
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
+import { useDeleteAnimalMutation } from "@/queries/animal.query";
 
-export function DeleteButton() {
+export function DeleteButton({ id }: { id: string }) {
+  const deleteMutation = useDeleteAnimalMutation();
+
+  function handleDelete() {
+    deleteMutation.mutate(id);
+  }
+
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
@@ -30,7 +37,9 @@ export function DeleteButton() {
         </AlertDialogHeader>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancelar</AlertDialogCancel>
-          <AlertDialogAction variant="destructive">Excluir</AlertDialogAction>
+          <AlertDialogAction variant="destructive" onClick={handleDelete}>
+            Excluir
+          </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>

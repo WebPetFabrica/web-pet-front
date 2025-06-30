@@ -66,14 +66,19 @@ export const UsersResponseData = z.object({
   users: z.array(User),
 });
 
+const Ong = z.object({
+  id: z.string(),
+  name: z.string(),
+  email: z.string(),
+  description: z.string().nullish(),
+  phone: z.string(),
+  cnpj: z.string(),
+});
+
+export type OngType = z.infer<typeof Ong>;
+
 export const OngsResponseData = z.object({
-  ongs: z.array(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-      email: z.string(),
-    }),
-  ),
+  ongs: z.array(Ong),
 });
 
 export const AnimalsResponseData = z.object({

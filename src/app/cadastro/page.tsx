@@ -11,73 +11,56 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import {
-  FISICO,
-  JURIDICO,
-  RegisterRequest,
-  RegisterRequestType,
-  UserTypeType,
-} from "@/lib/api.schema";
+import { JURIDICO, RegisterRequestType } from "@/lib/api.schema";
+import { $fetch } from "@/lib/fetch";
 import { standardSchemaResolver } from "@hookform/resolvers/standard-schema";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import z from "zod/v4";
 import { toast } from "sonner";
-import { $fetch } from "@/lib/fetch";
+import z from "zod/v4";
+import pt from "zod/v4/locales/pt.js";
 
-export const formSchema = z.discriminatedUnion("userType", [
-  z.object({
-    userType: z.literal(FISICO),
-    name: z.string(),
-    email: z.email(),
-    phone: z.string(),
-    cnpj: z.string().optional(),
-    password: z.string(),
-  }),
-  z.object({
-    userType: z.literal(JURIDICO),
-    name: z.string(),
-    email: z.email(),
-    phone: z.string(),
-    cpf: z.string().optional(),
-    password: z.string(),
-  }),
-]);
+z.config(pt());
+const phoneRegex = /^\(?\d{2}\)?[\s-]?9?\d{4}-?\d{4}$/;
+const cnpjRegex = /^\d{2}\.\d{3}\.\d{3}\/\d{4}-\d{2}$/;
+
+const formSchema = z.object({
+  name: z.string({ error: "Campo Obrigatório" }),
+  email: z.email({ error: "Campo Obrigatório" }),
+  phone: z
+    .string({ error: "Campo Obrigatório" })
+    .regex(phoneRegex, { error: "Telefone brasileiro inválido" }),
+  cpf: z.string({ error: "Campo Obrigatório" }).optional(),
+  cnpj: z
+    .string({ error: "Campo Obrigatório" })
+    .regex(cnpjRegex, { error: "CNPJ inválido" }),
+  password: z.string({ error: "Campo Obrigatório" }),
+});
 
 export default function Cadastro() {
   const router = useRouter();
 
-  const [perfil, setPerfil] = useState<UserTypeType>(JURIDICO);
   const [accepted, setAccepted] = useState(false);
 
   const form = useForm<RegisterRequestType>({
-    resolver: standardSchemaResolver(RegisterRequest),
-    defaultValues: {
-      name: "",
-      email: "",
-      phone: "",
-      cpf: "",
-      cnpj: "",
-      password: "",
-    },
+    resolver: standardSchemaResolver(formSchema),
   });
-
-  useEffect(() => {
-    form.setValue("userType", perfil);
-  }, [perfil, form]);
+  console.log(form.formState.errors);
 
   async function onSubmit(data: RegisterRequestType) {
     try {
       const payload = {
         ...data,
+        UserType: JURIDICO,
       };
-      console.log(payload);
+      console.log("pay", payload);
 
       if (!payload.cpf) delete payload.cpf;
       if (!payload.cnpj) delete payload.cnpj;
 
       const res = await $fetch("@post/auth/register", { body: payload });
+      console.log("res", res);
 
       if (res.success) {
         toast.success("Cadastro realizado com sucesso!");
@@ -101,8 +84,7 @@ export default function Cadastro() {
         <p className="mb-4 text-6xl font-semibold tracking-tight uppercase">
           Cadastre-se
         </p>
-
-        {/* Alternância de perfil */}
+        {/* 
         <div className="mb-8 flex flex-col items-center gap-2">
           <span className="text-sm font-medium">Escolha o tipo de perfil:</span>
           <div className="flex gap-4">
@@ -121,7 +103,7 @@ export default function Cadastro() {
               ONG / Protetor
             </Button>
           </div>
-        </div>
+        </div> */}
 
         <Form {...form}>
           <form
@@ -167,8 +149,7 @@ export default function Cadastro() {
                 </FormItem>
               )}
             />
-            {perfil === FISICO ? (
-              <FormField
+            {/* <FormField
                 control={form.control}
                 name="cpf"
                 render={({ field }) => (
@@ -180,22 +161,22 @@ export default function Cadastro() {
                     <FormMessage />
                   </FormItem>
                 )}
-              />
-            ) : (
-              <FormField
-                control={form.control}
-                name="cnpj"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>CNPJ</FormLabel>
-                    <FormControl>
-                      <Input placeholder="CNPJ:" {...field} />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            )}
+              /> */}
+
+            <FormField
+              control={form.control}
+              name="cnpj"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>CNPJ</FormLabel>
+                  <FormControl>
+                    <Input placeholder="CNPJ:" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
             <FormField
               control={form.control}
               name="password"

@@ -2,14 +2,15 @@
 
 import { Button } from "@/components/ui/button";
 import { useAnimalQuery } from "@/queries/animal.query";
+import { categoryTranslations } from "@/components/animal-form";
 import { House, Syringe } from "lucide-react";
 import Image from "next/image";
-import { useParams } from "next/navigation";
 
-export default function PetPage() {
-  const params = useParams() as { id: string };
+export default function PetPage({ params }: { params: { id: string } }) {
   const id = params.id;
   const { data: pet, isLoading, isError } = useAnimalQuery(id);
+
+  console.log("id", pet);
 
   if (isLoading) return <div className="p-8">Carregando...</div>;
   if (isError || !pet) return <div className="p-8">Pet não encontrado.</div>;
@@ -29,6 +30,9 @@ export default function PetPage() {
       <div className="space-y-8">
         <div>
           <h1 className="text-2xl font-semibold">{pet.name}</h1>
+          <span className="text-muted-foreground text-base">
+            {categoryTranslations[pet.category] || pet.category}
+          </span>
         </div>
 
         <div>
