@@ -1,34 +1,108 @@
+import { signIn } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { SiFacebook, SiGoogle, SiX } from "@icons-pack/react-simple-icons";
+import { useState } from "react";
+import { useForm } from "react-hook-form";
+import z from "zod";
+
+const formSchema = z.object({
+  email: z.string().email({ message: "E-mail inválido" }),
+  password: z.string().min(1, { message: "Digite a senha" }),
+  keepConnected: z.boolean().optional(),
+});
+
+type FormType = z.infer<typeof formSchema>;
 
 export default function Page() {
+  const [error, setError] = useState("");
+  const form = useForm<FormType>({
+    resolver: zodResolver(formSchema),
+    defaultValues: { email: "", password: "", keepConnected: false },
+  });
+
+  async function onSubmit(values: FormType) {
+    setError("");
+    const result = await signIn("credentials", {
+      redirect: false,
+      email: values.email,
+      password: values.password,
+    });
+    if (result?.error) setError("E-mail ou senha inválidos");
+  }
+
   return (
     <div className="flex h-full w-full items-center justify-center">
       <div className="bg-muted flex w-120 flex-col items-center justify-center rounded-xl px-15 py-4">
         <p className="my-6 text-2xl font-semibold tracking-tight uppercase">
           Login
         </p>
-
-        <div className="flex w-full flex-1 flex-col gap-3">
-          <Input placeholder="E-mail" />
-          <Input placeholder="Senha" />
-          <div className="flex justify-between">
-            <div className="flex items-center space-x-2">
-              <Checkbox id="connected" />
-              <label
-                htmlFor="connected"
-                className="text-sm leading-none font-medium"
-              >
-                Mantenha-me conectado
-              </label>
+        <Form {...form}>
+          <form
+            className="flex w-full flex-1 flex-col gap-3"
+            onSubmit={form.handleSubmit(onSubmit)}
+          >
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="E-mail" type="email" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input placeholder="Senha" type="password" {...field} />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <div className="flex justify-between">
+              <FormField
+                control={form.control}
+                name="keepConnected"
+                render={({ field }) => (
+                  <div className="flex items-center space-x-2">
+                    <Checkbox
+                      id="connected"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                    />
+                    <label
+                      htmlFor="connected"
+                      className="text-sm leading-none font-medium"
+                    >
+                      Mantenha-me conectado
+                    </label>
+                  </div>
+                )}
+              />
+              <span className="text-sm hover:underline">Esqueceu a senha?</span>
             </div>
-            <span className="text-sm hover:underline">Esqueceu a senha?</span>
-          </div>
-
-          <Button className="text-lg">Entrar</Button>
-        </div>
+            {error && <span className="text-destructive text-sm">{error}</span>}
+            <Button className="text-lg" type="submit">
+              Entrar
+            </Button>
+          </form>
+        </Form>
 
         <div className="mt-6 flex w-full flex-col gap-2 text-sm">
           <div className="flex gap-2 self-center">
